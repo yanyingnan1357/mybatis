@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+       Copyright 2009-2017 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- pojo字段驼峰命名 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--这个配置使全局的映射器(二级缓存)启用或禁用缓存  todo：那么优先级比映射文件中的高吗？-->
+        <!--<setting name="cacheEnabled" value="false" />-->
+
+        <!--如果我们不需要使用一级缓存，那么我们可以把一级缓存的范围指定为STATEMENT  这时就会执行clearLocalCache方法-->
+        <!--<setting name="localCacheScope" value="STATEMENT"/>-->
+    </settings>
+
+    <!-- autoMappingBehavior should be set in each test case -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://10.26.28.125:3306/house_huanan?useSSL=false"/>
+                <property name="username" value="lego"/>
+                <property name="password" value="11111111"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="org/apache/ibatis/aayyn/HouseMapper.xml"/>
+        <mapper resource="org/apache/ibatis/aayyn/HousedelBasicMapper.xml"/>
+    </mappers>
+
+</configuration>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+       Copyright 2009-2017 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apache.ibatis.aayyn.HousedelBasicMapper">
+
+    <sql id="baseColumns">
+        housedel_code, company_code, housedel_Type
+    </sql>
+
+    <!--开启本mapper的namespace下的二级缓存-->
+    <!--
+        eviction:代表的是缓存回收策略，目前MyBatis提供以下策略。
+        (1) LRU,最近最少使用的，一处最长时间不用的对象
+        (2) FIFO,先进先出，按对象进入缓存的顺序来移除他们
+        (3) SOFT,软引用，移除基于垃圾回收器状态和软引用规则的对象
+        (4) WEAK,弱引用，更积极的移除基于垃圾收集器状态和弱引用规则的对象。这里采用的是LRU，
+                移除最长时间不用的对形象
+
+        flushInterval:刷新间隔时间，单位为毫秒，这里配置的是100秒刷新，如果你不配置它，那么当
+        SQL被执行的时候才会去刷新缓存。
+
+        size:引用数目，一个正整数，代表缓存最多可以存储多少个对象，不宜设置过大。设置过大会导致内存溢出。
+        这里配置的是1024个对象
+
+        readOnly:属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。 因此这些对象不能被修改。这就提供了可观的性能提升。
+        而可读写的缓存会（通过序列化）返回缓存对象的拷贝。 速度上会慢一些，但是更安全，因此默认值是 false。
+
+        二级缓存是事务性的。这意味着，当 SqlSession 完成并提交时，或是完成并回滚，但没有执行 flushCache=true 的 insert/delete/update 语句时，缓存会获得更新。
+    -->
+    <!--<cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024"/>-->
+
+
+<!--case: 第一个简单sql的Debug-->
+    <select id="selectHousedelBasicInfo" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+        select
+        <include refid="baseColumns"/>
+        from sh_housedel_basic where housedel_code = #{housedelCode}
+    </select>
+
+<!--case: foreach-->
+    <select id="selectBiggerThanCode" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+        select
+        <include refid="baseColumns"/>
+        from sh_housedel_basic where housedel_code > #{housedelCode}<!--这里如果用#{arg0} 对应的入参就不用@Param("housedelCode")啦-->
+        and housedel_type in
+        <foreach collection="delTypeList" item="delType" open = "(" separator="," close=")">
+             #{delType}
+        </foreach>
+    </select>
+
+    <!--case: 语句可能拼出问题  多余了 where 和 and or 等-->
+    <!--<select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">-->
+        <!--SELECT * FROM sh_housedel_basic -->
+        <!--WHERE-->
+        <!--<if test="hb != null and hb.bedroomAmount != null">-->
+            <!--bedroom_amount >= 1-->
+        <!--</if>-->
+        <!--<if test="orientation != null">-->
+            <!--AND orientation like #{orientation}-->
+        <!--</if>-->
+        <!--<if test="hb != null and hb.buildArea != null">-->
+            <!--AND build_area = #{hb.buildArea}-->
+        <!--</if>-->
+    <!--</select>-->
+    
+<!--case: 加上where更安全，where 元素只会在至少有一个子元素的条件返回 SQL 子句的情况下才去插入“WHERE”子句。而且，若语句的开头为“AND”或“OR”，where 元素也会将它们去除。-->
+    <select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+        select
+        <include refid="baseColumns"/>
+        from sh_housedel_basic
+        <where>
+            <if test="hb != null and hb.bedroomAmount != null">
+                bedroom_amount >= 1
+            </if>
+            <if test="orientation != null">
+                and orientation like #{orientation}
+            </if>
+            <if test="hb != null and hb.buildArea != null">
+                and build_area = #{hb.buildArea}
+            </if>
+        </where>
+    </select>
+    
+<!--case: choose、when、otherwise-->
+    <select id="selectByBuildAreaOrOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+        select
+        <include refid="baseColumns"/>
+        from sh_housedel_basic where bedroom_amount >= 1
+        <choose>
+            <when test="orientation != null">
+                and orientation like #{orientation}
+            </when>
+            <when test="hb != null and hb.buildArea != null">
+                and build_area = #{hb.buildArea}
+            </when>
+            <otherwise>
+                and bedroom_amount = 1
+            </otherwise>
+        </choose>
+    </select>
+    
+<!--case: set 内含trim(trim标签可以完成加前缀，去后缀)，因为用的是“if”元素，若最后一个“if”没有匹配上而前面的匹配上，SQL 语句的最后就会有一个逗号遗留-->
+    <update id="updateByBuildAreaOrOrientation">
+        update sh_housedel_basic
+        <set>
+            <if test="hb != null and hb.bedroomAmount != null">
+                bedroom_amount = 1,
+            </if>
+            <if test="orientation != null">
+                orientation = '东西'
+            </if>
+        </set>
+        where housedel_type = #{hb.housedelType}
+    </update>
+
+</mapper>
