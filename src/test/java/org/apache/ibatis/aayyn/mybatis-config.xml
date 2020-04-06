@@ -30,6 +30,9 @@
 
         <!--如果我们不需要使用一级缓存，那么我们可以把一级缓存的范围指定为STATEMENT  这时就会执行clearLocalCache方法-->
         <!--<setting name="localCacheScope" value="STATEMENT"/>-->
+
+        <!--excutor 使用批量的试一试-->
+        <setting name="defaultExecutorType" value="BATCH"/>
     </settings>
 
     <!-- autoMappingBehavior should be set in each test case -->
