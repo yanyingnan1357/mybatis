@@ -117,6 +117,7 @@ public class Configuration {
   protected String logPrefix;
   protected Class<? extends Log> logImpl;
   protected Class<? extends VFS> vfsImpl;
+  //一级缓存也叫本地缓存，MyBatis 的一级缓存是在会话（SqlSession）层面进行缓存的。MyBatis 的一级缓存是默认开启的，如果我们不需要使用一级缓存，那么我们可以把一级缓存的范围指定为STATEMENT  这时就会执行clearLocalCache
   protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
   protected JdbcType jdbcTypeForNull = JdbcType.OTHER;
   protected Set<String> lazyLoadTriggerMethods = new HashSet<>(Arrays.asList("equals", "clone", "hashCode", "toString"));
@@ -186,7 +187,14 @@ public class Configuration {
     typeAliasRegistry.registerAlias("POOLED", PooledDataSourceFactory.class);
     typeAliasRegistry.registerAlias("UNPOOLED", UnpooledDataSourceFactory.class);
 
+    //默认情况下，只启用了本地的会话缓存即一级缓存，它仅仅对一个会话中的数据进行缓存。
     typeAliasRegistry.registerAlias("PERPETUAL", PerpetualCache.class);
+    //要启用全局的二级缓存，只需要在你的 SQL 映射文件中添加：
+    // <cache
+    //  eviction="FIFO"（以下四种都可以）
+    //  flushInterval="60000"
+    //  size="512"
+    //  readOnly="true"/>
     typeAliasRegistry.registerAlias("FIFO", FifoCache.class);
     typeAliasRegistry.registerAlias("LRU", LruCache.class);
     typeAliasRegistry.registerAlias("SOFT", SoftCache.class);
@@ -609,6 +617,9 @@ public class Configuration {
     } else {
       executor = new SimpleExecutor(this, transaction);
     }
+
+    //CachingExecutor就是用来处理二级缓存的-默认开启
+    //BaseExecutor中的PerpetualCache用来处理一级缓存的
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);//经典的装饰设计模式
     }

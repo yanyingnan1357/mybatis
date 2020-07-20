@@ -85,6 +85,7 @@ public class JdbcTransaction implements Transaction {
   @Override
   public void close() throws SQLException {
     if (connection != null) {
+      //connection.close()不意味着真的要销毁conn，而是要把conn放回连接池，供下一次使用，既然还要使用，自然就需要重置AutoCommit属性了
       resetAutoCommit();
       if (log.isDebugEnabled()) {
         log.debug("Closing JDBC Connection [" + connection + "]");

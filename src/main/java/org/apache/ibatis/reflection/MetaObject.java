@@ -39,10 +39,10 @@ public class MetaObject {
   private final ReflectorFactory reflectorFactory;
 
   private MetaObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
-    this.originalObject = object;
-    this.objectFactory = objectFactory;
-    this.objectWrapperFactory = objectWrapperFactory;
-    this.reflectorFactory = reflectorFactory;
+    this.originalObject = object;//要反射的对象，比如Student
+    this.objectFactory = objectFactory;//通过Class对象反射创建对象实例的工厂类，比如创建一个Student对象
+    this.objectWrapperFactory = objectWrapperFactory;//对目标对象进行包装，比如可以将Properties对象包装成为一个Map并返回Map对象。
+    this.reflectorFactory = reflectorFactory;//为了避免多次反射同一个Class对象，ReflectorFactory提供了Class对象的反射结果缓存。
 
     if (object instanceof ObjectWrapper) {
       this.objectWrapper = (ObjectWrapper) object;
@@ -109,6 +109,7 @@ public class MetaObject {
     return objectWrapper.hasGetter(name);
   }
 
+  //属性取值
   public Object getValue(String name) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {
@@ -116,6 +117,7 @@ public class MetaObject {
       if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
         return null;
       } else {
+        //这个递归就可以完成链式的取值如：metaObject.getValue("delegate.boundSql.sql");
         return metaValue.getValue(prop.getChildren());
       }
     } else {
@@ -123,6 +125,7 @@ public class MetaObject {
     }
   }
 
+  //属性赋值
   public void setValue(String name, Object value) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {
@@ -135,6 +138,7 @@ public class MetaObject {
           metaValue = objectWrapper.instantiatePropertyValue(name, prop, objectFactory);
         }
       }
+      //这个递归就可以完成链式的赋值如：metaObject.setValue("delegate.boundSql.sql", newSql);
       metaValue.setValue(prop.getChildren(), value);
     } else {
       objectWrapper.set(prop, value);

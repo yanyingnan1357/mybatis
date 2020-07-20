@@ -36,6 +36,7 @@ public final class SystemMetaObject {
   private static class NullObject {
   }
 
+  //使用mybatis反射工具类的入口
   public static MetaObject forObject(Object object) {
     return MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, new DefaultReflectorFactory());
   }

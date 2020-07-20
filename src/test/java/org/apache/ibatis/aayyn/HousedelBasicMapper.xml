@@ -29,11 +29,10 @@
     <!--开启本mapper的namespace下的二级缓存-->
     <!--
         eviction:代表的是缓存回收策略，目前MyBatis提供以下策略。
-        (1) LRU,最近最少使用的，一处最长时间不用的对象
+        (1) LRU,最近最少使用的，一处最长时间不用的对象  默认的清除策略就是LRU。
         (2) FIFO,先进先出，按对象进入缓存的顺序来移除他们
         (3) SOFT,软引用，移除基于垃圾回收器状态和软引用规则的对象
-        (4) WEAK,弱引用，更积极的移除基于垃圾收集器状态和弱引用规则的对象。这里采用的是LRU，
-                移除最长时间不用的对形象
+        (4) WEAK,弱引用，更积极的移除基于垃圾收集器状态和弱引用规则的对象。
 
         flushInterval:刷新间隔时间，单位为毫秒，这里配置的是100秒刷新，如果你不配置它，那么当
         SQL被执行的时候才会去刷新缓存。
@@ -52,14 +51,14 @@
 <!--case: 第一个简单sql的Debug-->
     <select id="selectHousedelBasicInfo" resultType="org.apache.ibatis.aayyn.HousedelBasic">
         select
-        <include refid="baseColumns"/>
+        *
         from sh_housedel_basic where housedel_code = #{housedelCode}
     </select>
 
 <!--case: foreach-->
     <select id="selectBiggerThanCode" resultType="org.apache.ibatis.aayyn.HousedelBasic">
         select
-        <include refid="baseColumns"/>
+        *
         from sh_housedel_basic where housedel_code > #{housedelCode}<!--这里如果用#{arg0} 对应的入参就不用@Param("housedelCode")啦-->
         and housedel_type in
         <foreach collection="delTypeList" item="delType" open = "(" separator="," close=")">
@@ -89,7 +88,7 @@
         from sh_housedel_basic
         <where>
             <if test="hb != null and hb.bedroomAmount != null">
-                bedroom_amount >= 1
+                housedel_code = 105100000002
             </if>
             <if test="orientation != null">
                 and orientation like #{orientation}

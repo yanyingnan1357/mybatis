@@ -200,8 +200,12 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private void cacheElement(XNode context) {
     if (context != null) {
+
+      //xml配置文件中只需要配置<cache/>即可开启二级缓存
+      //<cache type="com.domain.something.MyCustomCache"/>没有像这样自定义缓存的话，就默认使用PERPETUAL缓存
       String type = context.getStringAttribute("type", "PERPETUAL");
       Class<? extends Cache> typeClass = typeAliasRegistry.resolveAlias(type);
+      //默认LRU淘汰策略-类LruCache
       String eviction = context.getStringAttribute("eviction", "LRU");
       Class<? extends Cache> evictionClass = typeAliasRegistry.resolveAlias(eviction);
       Long flushInterval = context.getLongAttribute("flushInterval");

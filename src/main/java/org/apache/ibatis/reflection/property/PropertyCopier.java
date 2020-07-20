@@ -28,6 +28,7 @@ public final class PropertyCopier {
     // Prevent Instantiation of Static Class
   }
 
+  //将一个对象的属性值赋给另一个对象中对应的属性。
   public static void copyBeanProperties(Class<?> type, Object sourceBean, Object destinationBean) {
     Class<?> parent = type;
     while (parent != null) {

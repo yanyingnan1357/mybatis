@@ -49,6 +49,7 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  */
 public class Reflector {
 
+  //Reflector就是处理构造函数中传入的class，然后解析出其所有属性，包括构造函数，set、get方法还有所有对应的属性
   private final Class<?> type;
   private final String[] readablePropertyNames;
   private final String[] writablePropertyNames;
@@ -58,6 +59,7 @@ public class Reflector {
   private final Map<String, Class<?>> getTypes = new HashMap<>();
   private Constructor<?> defaultConstructor;
 
+  //resultSet结果集列名和对象属性名之间，建立一对一对应关系，如SELECT STUD_ID AS STUDID, NAME, EMAIL, DOB, PHONE
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
   public Reflector(Class<?> clazz) {

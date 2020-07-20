@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HouseMapper {
 
-    House selectHouse(Long id);
+    House selectHouse(@Param("id") Long id);
 
     Integer batchInsert(@Param("houseList") List<House> houseList);
 

@@ -21,15 +21,17 @@ package org.apache.ibatis.executor;
 public class ErrorContext {
 
   private static final String LINE_SEPARATOR = System.getProperty("line.separator","\n");
-  private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<>();
+  private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<>();//保证了在多线程环境中，每个线程内部可以共用一份 ErrorContext，但多个线程持有的 ErrorContext 互不影响，保证了异常日志的正确输出
 
   private ErrorContext stored;
-  private String resource;
-  private String activity;
-  private String object;
-  private String message;
-  private String sql;
-  private Throwable cause;
+  //异常是由谁在做什么的时候在哪个资源文件中发生的，执行的 SQL 是哪个，以及 Java 详细的异常信息
+  //以下六个私有变量分别存储这些信息：
+  private String resource;        //存储异常存在于哪个资源文件中
+  private String activity;        //存储异常是做什么操作时发生的
+  private String object;          //存储哪个对象操作时发生异常
+  private String message;         //存储异常的概览信息
+  private String sql;             //存储发生日常的 SQL 语句
+  private Throwable cause;        //存储详细的 Java 异常日志
 
   private ErrorContext() {
   }
@@ -43,6 +45,7 @@ public class ErrorContext {
     return context;
   }
 
+  //stored 变量充当一个中介，在调用 store() 方法时将当前 ErrorContext 保存下来，在调用 recall() 方法时将该 ErrorContext 实例传递给 LOCAL。
   public ErrorContext store() {
     ErrorContext newContext = new ErrorContext();
     newContext.stored = this;

@@ -56,6 +56,7 @@ public abstract class BaseExecutor implements Executor {
 
   protected ConcurrentLinkedQueue<DeferredLoad> deferredLoads;
   protected PerpetualCache localCache;
+  //localOutputParameterCache也是一级缓存，用来缓存存储过程的返回结果。
   protected PerpetualCache localOutputParameterCache;
   protected Configuration configuration;
 
@@ -164,6 +165,7 @@ public abstract class BaseExecutor implements Executor {
       }
       // issue #601
       deferredLoads.clear();
+//      如果  <setting name="localCacheScope" value="STATEMENT"/> 把一级缓存的范围指定为STATEMENT  这时就会执行clearLocalCache
       if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
         // issue #482
         clearLocalCache();

@@ -59,8 +59,8 @@ public class Plugin implements InvocationHandler {
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       //虽然反射性能不那么好，但是Mybatis缓存了一个对象的反射结果map，只有在初始化我们自己实现的Interceptor的bean的时候
-      //也就是上面的wrap方法的时候去初始化这个map，以后每次调用这个invoke的时候从map里取，优雅啊！
-      //如果没有这个map 每次代理类调用它的方法的时候都要通过反射判断这个方法是否要被拦截增强（也就是getSignatureMap的逻辑每次都要走一遍）
+      //也就是上面的wrap方法的时候去初始化这个map，以后每次调用这个invoke的时候从map里取，优秀
+      //如果没有这个map 每次代理类调用它的方法的时候都要通过反射判断这个方法是否要被拦截增强，也就是getSignatureMap的逻辑每次都要走一遍
       Set<Method> methods = signatureMap.get(method.getDeclaringClass());
       if (methods != null && methods.contains(method)) {
         return interceptor.intercept(new Invocation(target, method, args));

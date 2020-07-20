@@ -18,14 +18,14 @@ import java.util.List;
  ├─cursor          返回结果resultset
  ├─datasourcer     数据管理
  ├─exceptionsr     异常
- ├─executor        执行器
+ ├─executor        执行器                                done
  ├─io              classloader
  ├─jdbc            jdbc
  ├─lang            jdk7 jdk8
  ├─logging         日志相关
  ├─mapping         mapper相关的封装
  ├─parsing         xml相关解析                          doing
- ├─plugin          拦截器
+ ├─plugin          拦截器                               done
  ├─reflection      反射相关
  ├─scripting       数据厂家                             doing
  ├─session         session                             done
@@ -41,32 +41,33 @@ public class Test {
 
     try (SqlSession session = sqlSessionFactory.openSession()) {
       //不需要mapper类，直接读取mapper.xml就可以
-      House house1 = session.selectOne("org.apache.ibatis.aayyn.HouseMapper.selectHouse", 8052566);
+//      House house1 = session.selectOne("org.apache.ibatis.aayyn.HouseMapper.selectHouse", 8052566);
       //获取mapper类，mapper类自动读取mapper.xml，那就必然是进行了动态代理
       HouseMapper houseMapper = session.getMapper(HouseMapper.class);
       House house2 = houseMapper.selectHouse(8052566L);
 
-      List<House> houseList = new ArrayList<>();
-      houseList.add(house2);
-      houseList.add(house2);
-      houseList.add(house2);
-      Integer house3 = houseMapper.batchInsert(houseList);
-
+//      List<House> houseList = new ArrayList<>();
+//      houseList.add(house2);
+//      houseList.add(house2);
+//      houseList.add(house2);
+//      Integer house3 = houseMapper.batchInsert(houseList);
+//
       HousedelBasicMapper housedelBasicMapper = session.getMapper(HousedelBasicMapper.class);
       HousedelBasic housedelBasic1 = housedelBasicMapper.selectHousedelBasicInfo(105100000002L);
-      List<Integer> delTypeList = new ArrayList<>();
-      delTypeList.add(1);
-      delTypeList.add(2);
-      List<HousedelBasic> housedelBasic5 = housedelBasicMapper.selectBiggerThanCode(105100000002L, delTypeList);
+//      List<Integer> delTypeList = new ArrayList<>();
+//      delTypeList.add(1);
+//      delTypeList.add(2);
+//      List<HousedelBasic> housedelBasic5 = housedelBasicMapper.selectBiggerThanCode(105100000002L, delTypeList);
       List<HousedelBasic> housedelBasic2 = housedelBasicMapper.selectByBuildAreaAndOrientation("东%", housedelBasic1);
-      List<HousedelBasic> housedelBasic3 = housedelBasicMapper.selectByBuildAreaOrOrientation("东%", housedelBasic1);
+//      List<HousedelBasic> housedelBasic3 = housedelBasicMapper.selectByBuildAreaOrOrientation("东%", housedelBasic1);
 
       //返回更新的行数
-      Integer housedelBasic4 = housedelBasicMapper.updateByBuildAreaOrOrientation("东%", housedelBasic1);
+//      Integer housedelBasic4 = housedelBasicMapper.updateByBuildAreaOrOrientation("东%", housedelBasic1);
       //提交事务、关闭SqlSession
       //mybatis如果底层使用JDBC（在mybatis.xml中配置的transactionManager标签的type设为jdbc的话），那么，mybatis会默认开启事务，也就是说，mybatis默认是关闭自动提交的。
       //在mybatis中，如果我们执行了数据库的修改操作（insert、update、delete），必须调用session.commit()方法，所做的修改才能持久化到磁盘。
       //42行 在openSession()时，传入true，即可关闭事务。
+      //autoCommit=false，但是没有手动commit，在sqlSession.close()时，Mybatis会将事务进行rollback()操作，然后才执行conn.close()关闭连接，当然数据最终也就没能持久化到数据库中了
       session.commit();
       //try (SqlSession session = sqlSessionFactory.openSession()) 自动在finally中session.close()了
       //session.close();
@@ -74,12 +75,12 @@ public class Test {
 
       //log.info("house1:{}", house1);
       log.info("house2:{}", house2);
-      log.info("house3:{}", house3);
+//      log.info("house3:{}", house3);
       log.info("housedelBasic1:{}", housedelBasic1);
-      log.info("housedelBasic5:{}", housedelBasic5);
+//      log.info("housedelBasic5:{}", housedelBasic5);
       log.info("housedelBasic2:{}", housedelBasic2);
-      log.info("housedelBasic3:{}", housedelBasic3);
-      log.info("housedelBasic4:{}", housedelBasic4);
+//      log.info("housedelBasic3:{}", housedelBasic3);
+//      log.info("housedelBasic4:{}", housedelBasic4);
     }
   }
 }

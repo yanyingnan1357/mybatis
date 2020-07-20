@@ -44,6 +44,9 @@ public final class PropertyNamer {
     return name;
   }
 
+  //* 根据传入的参数判断这个参数是不是应包含属性
+  //* 判断的依据是这个参数是不是以get|set|is开头的。但这个函数的判断依据是比较简单的，这一个必然条件。
+  //* 也就是说如果这个函数返回false，则这个参数肯定部包含属性；反之，如果这个函数返回true,则只能说明这个参数可能包含属性
   public static boolean isProperty(String name) {
     return isGetter(name) || isSetter(name);
   }

@@ -15,5 +15,6 @@
  */
 /**
  * External transaction.
+ * 含义为托管事务，空壳事务管理器，皮包公司。仅是提醒用户，在其它环境中应用时，把事务托管给其它框架，比如托管给Spring，让Spring去管理事务
  */
 package org.apache.ibatis.transaction.managed;
