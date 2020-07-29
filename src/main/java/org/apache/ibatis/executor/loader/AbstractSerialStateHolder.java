@@ -87,6 +87,7 @@ public abstract class AbstractSerialStateHolder implements Externalizable {
     out.writeObject(bytes);
 
     if (firstRound) {
+      //threadLocal有可能存在内存泄漏，在使用完之后，最好使用remove方法将这个变量移除
       stream.remove();
     }
   }

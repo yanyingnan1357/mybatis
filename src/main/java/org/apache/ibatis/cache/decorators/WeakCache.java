@@ -29,7 +29,9 @@ import org.apache.ibatis.cache.Cache;
  * @author Clinton Begin
  */
 public class WeakCache implements Cache {
+  //为了阻止value被回收声明的队列
   private final Deque<Object> hardLinksToAvoidGarbageCollection;
+  //ReferenceQueue可以完成，当一个obj被gc掉之后，其相应的包装类，即ref对象会被放入queue中。我们可以从queue中获取到相应的对象信息，同时进行额外的处理。比如数据清理等
   private final ReferenceQueue<Object> queueOfGarbageCollectedEntries;
   private final Cache delegate;
   private int numberOfHardLinks;
@@ -72,6 +74,7 @@ public class WeakCache implements Cache {
       if (result == null) {
         delegate.removeObject(key);
       } else {
+        //用一个强引用队列指向value，这样阻止了被回收，阻止被回收的大小是numberOfHardLinks
         hardLinksToAvoidGarbageCollection.addFirst(result);
         if (hardLinksToAvoidGarbageCollection.size() > numberOfHardLinks) {
           hardLinksToAvoidGarbageCollection.removeLast();
@@ -96,6 +99,7 @@ public class WeakCache implements Cache {
 
   private void removeGarbageCollectedItems() {
     WeakEntry sv;
+    //利用ReferenceQueue清理 无用的弱引用对象
     while ((sv = (WeakEntry) queueOfGarbageCollectedEntries.poll()) != null) {
       delegate.removeObject(sv.key);
     }
@@ -108,6 +112,15 @@ public class WeakCache implements Cache {
       super(value, garbageCollectionQueue);
       this.key = key;
     }
+  }
+
+  public static void main(String[] args) {
+    int a = 1;
+    int b = 1;
+    int c = a + b;
+    //有点骚
+    System.out.println((a = a+b) != c);
+    System.out.println(a);
   }
 
 }

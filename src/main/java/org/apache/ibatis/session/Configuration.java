@@ -618,7 +618,7 @@ public class Configuration {
       executor = new SimpleExecutor(this, transaction);
     }
 
-    //CachingExecutor就是用来处理二级缓存的-默认开启
+    //CachingExecutor就是用来处理二级缓存的-配置了<cache/>就开启
     //BaseExecutor中的PerpetualCache用来处理一级缓存的
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);//经典的装饰设计模式
