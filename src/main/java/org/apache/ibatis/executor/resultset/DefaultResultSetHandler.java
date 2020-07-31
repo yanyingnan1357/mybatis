@@ -712,6 +712,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     } else {
       columnName = rsw.getColumnNames().get(0);
     }
+    //通过TypeHandler转换获取结果
     final TypeHandler<?> typeHandler = rsw.getTypeHandler(resultType, columnName);
     return typeHandler.getResult(rsw.getResultSet(), columnName);
   }

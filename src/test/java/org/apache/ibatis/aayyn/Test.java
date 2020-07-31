@@ -39,7 +39,8 @@ public class Test {
     InputStream inputStream = Resources.getResourceAsStream(resource);
     SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-    try (SqlSession session = sqlSessionFactory.openSession()) {
+    SqlSession session = sqlSessionFactory.openSession();
+    try {
       //不需要mapper类，直接读取mapper.xml就可以
 //      House house1 = session.selectOne("org.apache.ibatis.aayyn.HouseMapper.selectHouse", 8052566);
       //获取mapper类，mapper类自动读取mapper.xml，那就必然是进行了动态代理
@@ -51,14 +52,18 @@ public class Test {
 //      houseList.add(house2);
 //      houseList.add(house2);
 //      Integer house3 = houseMapper.batchInsert(houseList);
-//
-      HousedelBasicMapper housedelBasicMapper = session.getMapper(HousedelBasicMapper.class);
-      HousedelBasic housedelBasic1 = housedelBasicMapper.selectHousedelBasicInfo(105100000002L);
+
+
+
+//      HousedelBasicMapper housedelBasicMapper = session.getMapper(HousedelBasicMapper.class);
+//      HousedelBasic housedelBasic1 = housedelBasicMapper.selectHousedelBasicInfo(105100000002L);
+
+
 //      List<Integer> delTypeList = new ArrayList<>();
 //      delTypeList.add(1);
 //      delTypeList.add(2);
 //      List<HousedelBasic> housedelBasic5 = housedelBasicMapper.selectBiggerThanCode(105100000002L, delTypeList);
-      List<HousedelBasic> housedelBasic2 = housedelBasicMapper.selectByBuildAreaAndOrientation("东%", housedelBasic1);
+//      List<HousedelBasic> housedelBasic2 = housedelBasicMapper.selectByBuildAreaAndOrientation("东%", housedelBasic1);
 //      List<HousedelBasic> housedelBasic3 = housedelBasicMapper.selectByBuildAreaOrOrientation("东%", housedelBasic1);
 
       //返回更新的行数
@@ -76,11 +81,13 @@ public class Test {
       //log.info("house1:{}", house1);
       log.info("house2:{}", house2);
 //      log.info("house3:{}", house3);
-      log.info("housedelBasic1:{}", housedelBasic1);
+//      log.info("housedelBasic1:{}", housedelBasic1);
 //      log.info("housedelBasic5:{}", housedelBasic5);
-      log.info("housedelBasic2:{}", housedelBasic2);
+//      log.info("housedelBasic2:{}", housedelBasic2);
 //      log.info("housedelBasic3:{}", housedelBasic3);
 //      log.info("housedelBasic4:{}", housedelBasic4);
+    } finally {
+      session.close();
     }
   }
 }

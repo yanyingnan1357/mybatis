@@ -35,6 +35,11 @@
         <!--<setting name="defaultExecutorType" value="BATCH"/>-->
     </settings>
 
+    <!--如何注册一个自定义的TypeHandler-->
+    <!--<typeHandlers>-->
+        <!--<typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>-->
+    <!--</typeHandlers>-->
+
     <!-- autoMappingBehavior should be set in each test case -->
     <environments default="development">
         <environment id="development">
