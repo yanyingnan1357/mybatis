@@ -55,6 +55,7 @@ public abstract class TypeReference<T> {
     Type rawType = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
     // TODO remove this when Reflector is fixed to return Types
     //如果该类型还是参数化类型（仍然带有泛型，即泛型嵌套的模式），那么就需要再次执行getActualTypeArguments()方法来获取其泛型类型（参数类型），最后将该类型返回（赋值给字段）
+    //为什么只会获取两次呢？因为，通过之前的类架构我们已经明白，具体的类型处理器最多只会存在两层继承。
     if (rawType instanceof ParameterizedType) {
       rawType = ((ParameterizedType) rawType).getRawType();
     }

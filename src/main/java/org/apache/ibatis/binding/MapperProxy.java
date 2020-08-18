@@ -22,6 +22,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.reflection.ExceptionUtil;
@@ -77,9 +78,11 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
+      //method可能是mapper接口中的toString()等属于object的方法
       if (Object.class.equals(method.getDeclaringClass())) {
         return method.invoke(this, args);
       } else if (method.isDefault()) {
+        //privateLookupInMethod 判断MethodHandles类中是否有privateLookupIn方法，java9新特性
         if (privateLookupInMethod == null) {
           return invokeDefaultMethodJava8(proxy, method, args);
         } else {
@@ -89,6 +92,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     } catch (Throwable t) {
       throw ExceptionUtil.unwrapThrowable(t);
     }
+    //先去methodCache中找是否已经存在这个method了，没有就将method封装成MapperMethod存进mehtodCache中然后返回MapperMethod。
     final MapperMethod mapperMethod = cachedMapperMethod(method);
     return mapperMethod.execute(sqlSession, args);
   }
@@ -112,5 +116,13 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
     final Class<?> declaringClass = method.getDeclaringClass();
     return lookupConstructor.newInstance(declaringClass, ALLOWED_MODES).unreflectSpecial(method, declaringClass)
         .bindTo(proxy).invokeWithArguments(args);
+  }
+
+  public static void main(String[] args) {
+    Map<String, String> map = new HashMap();
+    map.put("key", "value");
+    //如果不存在key为"key"的键就存入value，并返回"key"对应的值，就是一定保证有返回值
+    String key = map.computeIfAbsent("key", k -> "value2");
+    System.out.println(key);
   }
 }

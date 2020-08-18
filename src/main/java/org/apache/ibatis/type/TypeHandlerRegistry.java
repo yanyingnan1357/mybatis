@@ -54,7 +54,8 @@ import org.apache.ibatis.session.Configuration;
  */
 public final class TypeHandlerRegistry {
 
-  // EnumMap，保存Mybatis内部提供的枚举JdbcType类型和对应的TypeHandler
+  // EnumMap，保存Mybatis内部提供的枚举JdbcType类型和对应的TypeHandler，HashMap是一种通过对key计算hashCode()，空间换时间，直接定位到value所在的内部数组的索引，因此，查找效率非常高。
+  //如果作为key的对象是enum类型，那么EnumMap更好，它在内部以一个非常紧凑的数组存储value，并且根据enum类型的key直接定位到内部数组的索引，并不需要计算hashCode()，不但效率最高，而且没有额外的空间浪费。
   private final Map<JdbcType, TypeHandler<?>>  jdbcTypeHandlerMap = new EnumMap<>(JdbcType.class);
 
   // Type：javaType的Class类型(Type是Class的接口)，value是一个Map集合（比如String，可能对应数据库的clob、char、varchar等，所以是一对多关系）

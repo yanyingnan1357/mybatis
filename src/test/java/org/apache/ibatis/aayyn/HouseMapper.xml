@@ -23,7 +23,7 @@
 <mapper namespace="org.apache.ibatis.aayyn.HouseMapper">
     <!--case: 第一个-->
     <select id="selectHouse"  resultType="org.apache.ibatis.aayyn.House">
-        select * from sh_house where id = #{id}
+        select * from sh_house where id = #{param1}
     </select>
 
     <!--case: foreach: separator="," 必须要-->

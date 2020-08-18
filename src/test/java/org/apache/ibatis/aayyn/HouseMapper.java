@@ -11,4 +11,8 @@ public interface HouseMapper {
 
     Integer batchInsert(@Param("houseList") List<House> houseList);
 
+    default void defaultMethod() {
+      System.out.println("我是个默认方法");
+    }
+
 }

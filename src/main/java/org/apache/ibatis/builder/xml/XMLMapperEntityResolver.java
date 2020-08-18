@@ -27,6 +27,9 @@ import org.xml.sax.SAXException;
 /**
  * Offline entity resolver for the MyBatis DTDs.
  *
+ * XMLMapperEntityResolver是Mybatis针对EntityResolver的实现类，
+ * 它从本地环境去寻找dtd文件，而不是去网络上下载，所以，速度飞快。
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */

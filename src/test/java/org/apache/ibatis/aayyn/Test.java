@@ -16,8 +16,8 @@ import java.util.List;
  ├─builder         解析xml相关                           done
  ├─cache           缓存
  ├─cursor          返回结果resultset
- ├─datasourcer     数据管理
- ├─exceptionsr     异常
+ ├─datasource      数据管理
+ ├─exceptions      异常
  ├─executor        执行器                                done
  ├─io              classloader
  ├─jdbc            jdbc
@@ -52,7 +52,6 @@ public class Test {
 //      houseList.add(house2);
 //      houseList.add(house2);
 //      Integer house3 = houseMapper.batchInsert(houseList);
-
 
 
 //      HousedelBasicMapper housedelBasicMapper = session.getMapper(HousedelBasicMapper.class);
