@@ -1,6 +1,6 @@
 package org.apache.ibatis.type;
 
-import org.apache.ibatis.aayyn.House;
+import org.apache.ibatis.aaatest.entry.House;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;

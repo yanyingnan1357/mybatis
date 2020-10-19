@@ -54,8 +54,8 @@
     </environments>
 
     <mappers>
-        <mapper resource="org/apache/ibatis/aayyn/HouseMapper.xml"/>
-        <mapper resource="org/apache/ibatis/aayyn/HousedelBasicMapper.xml"/>
+        <mapper resource="org/apache/ibatis/aaatest/HouseMapper.xml"/>
+        <mapper resource="org/apache/ibatis/aaatest/HousedelBasicMapper.xml"/>
     </mappers>
 
 </configuration>

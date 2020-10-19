@@ -20,9 +20,9 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.apache.ibatis.aayyn.HouseMapper">
+<mapper namespace="org.apache.ibatis.aaatest.HouseMapper">
     <!--case: 第一个-->
-    <select id="selectHouse"  resultType="org.apache.ibatis.aayyn.House">
+    <select id="selectHouse"  resultType="org.apache.ibatis.aaatest.entry.House">
         select * from sh_house where id = #{param1}
     </select>
 

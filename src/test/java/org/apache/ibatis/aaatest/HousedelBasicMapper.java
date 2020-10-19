@@ -1,6 +1,7 @@
-package org.apache.ibatis.aayyn;
+package org.apache.ibatis.aaatest;
 
 
+import org.apache.ibatis.aaatest.entry.HousedelBasic;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

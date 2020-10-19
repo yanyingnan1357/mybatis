@@ -20,7 +20,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.apache.ibatis.aayyn.HousedelBasicMapper">
+<mapper namespace="org.apache.ibatis.aaatest.HousedelBasicMapper">
 
     <sql id="baseColumns">
         housedel_code, company_code, housedel_Type
@@ -49,14 +49,14 @@
 
 
 <!--case: 第一个简单sql的Debug-->
-    <select id="selectHousedelBasicInfo" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+    <select id="selectHousedelBasicInfo" resultType="org.apache.ibatis.aaatest.entry.HousedelBasic">
         select
         *
         from sh_housedel_basic where housedel_code = #{housedelCode}
     </select>
 
 <!--case: foreach-->
-    <select id="selectBiggerThanCode" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+    <select id="selectBiggerThanCode" resultType="org.apache.ibatis.aaatest.entry.HousedelBasic">
         select
         *
         from sh_housedel_basic where housedel_code > #{housedelCode}<!--这里如果用#{arg0} 对应的入参就不用@Param("housedelCode")啦-->
@@ -67,7 +67,7 @@
     </select>
 
     <!--case: 语句可能拼出问题  多余了 where 和 and or 等-->
-    <!--<select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">-->
+    <!--<select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aaatestst.HousedelBasic">-->
         <!--SELECT * FROM sh_housedel_basic -->
         <!--WHERE-->
         <!--<if test="hb != null and hb.bedroomAmount != null">-->
@@ -82,7 +82,7 @@
     <!--</select>-->
     
 <!--case: 加上where更安全，where 元素只会在至少有一个子元素的条件返回 SQL 子句的情况下才去插入“WHERE”子句。而且，若语句的开头为“AND”或“OR”，where 元素也会将它们去除。-->
-    <select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+    <select id="selectByBuildAreaAndOrientation" resultType="org.apache.ibatis.aaatest.entry.HousedelBasic">
         select
         <include refid="baseColumns"/>
         from sh_housedel_basic
@@ -100,7 +100,7 @@
     </select>
     
 <!--case: choose、when、otherwise-->
-    <select id="selectByBuildAreaOrOrientation" resultType="org.apache.ibatis.aayyn.HousedelBasic">
+    <select id="selectByBuildAreaOrOrientation" resultType="org.apache.ibatis.aaatest.entry.HousedelBasic">
         select
         <include refid="baseColumns"/>
         from sh_housedel_basic where bedroom_amount >= 1

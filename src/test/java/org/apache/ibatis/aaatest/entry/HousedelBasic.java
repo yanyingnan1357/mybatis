@@ -1,11 +1,10 @@
-package org.apache.ibatis.aayyn;
+package org.apache.ibatis.aaatest.entry;
 
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,7 +20,6 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-//@Table(name = "sh_housedel_basic")
 public class HousedelBasic implements Serializable {
   private static final long serialVersionUID = 1L;
 
