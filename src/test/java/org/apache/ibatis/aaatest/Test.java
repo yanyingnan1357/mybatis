@@ -51,12 +51,13 @@ public class Test {
       HouseMapper houseMapper = session.getMapper(HouseMapper.class);
       House house2 = houseMapper.selectHouse(8052566L);
 
-//      //批量插入测试
-//      List<House> houseList = new ArrayList<>();
-//      houseList.add(house2);
-//      houseList.add(house2);
-//      houseList.add(house2);
-//      Integer house3 = houseMapper.batchInsert(houseList);
+      //批量插入测试
+      List<House> houseList = new ArrayList<>();
+      houseList.add(house2);
+      houseList.add(house2);
+      houseList.add(house2);
+      log.info("houseList:{}",houseList);
+      houseMapper.batchInsert(houseList);
 
 
 //    -------------------------------housedel_basic表------------------------------
@@ -80,14 +81,15 @@ public class Test {
       //try (SqlSession session = sqlSessionFactory.openSession()) 自动在finally中session.close()了
 
 //      log.info("house1:{}", house1);
-      log.info("house2:{}", house2);
+//      log.info("house2:{}", house2);
 //      log.info("house3:{}", house3);
 
-      log.info("housedelBasic1:{}", housedelBasic1);
+//      log.info("housedelBasic1:{}", housedelBasic1);
 //      log.info("housedelBasic5:{}", housedelBasic5);
 //      log.info("housedelBasic2:{}", housedelBasic2);
 //      log.info("housedelBasic3:{}", housedelBasic3);
 //      log.info("housedelBasic4:{}", housedelBasic4);
+      log.info("houseList:{}",houseList);
     }
   }
 }

@@ -63,6 +63,7 @@ public class Plugin implements InvocationHandler {
       //如果没有这个map 每次代理类调用它的方法的时候都要通过反射判断这个方法是否要被拦截增强，也就是getSignatureMap的逻辑每次都要走一遍
       Set<Method> methods = signatureMap.get(method.getDeclaringClass());
       if (methods != null && methods.contains(method)) {
+        //回调拦截器接口中的方法，进而调用了用户自定义实现的拦截器方法
         return interceptor.intercept(new Invocation(target, method, args));
       }
       return method.invoke(target, args);
