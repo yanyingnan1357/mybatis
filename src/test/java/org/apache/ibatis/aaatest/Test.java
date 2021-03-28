@@ -42,7 +42,6 @@ public class Test {
     SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
     try (SqlSession session = sqlSessionFactory.openSession()) {
-
 //      -------------------------------house表------------------------------
 //      //不需要mapper类，直接读取mapper.xml
 //      House house1 = session.selectOne("org.apache.ibatis.aayyn.HouseMapper.selectHouse", 8052566);
