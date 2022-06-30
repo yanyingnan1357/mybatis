@@ -168,4 +168,5 @@ public class HousedelBasic implements Serializable {
   @Column(name = "del_source_sub")
   private String delSourceSub;
 
+
 }
